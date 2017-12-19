@@ -1,0 +1,30 @@
+/**index.wxss**/
+@import "../common/weui.wxss";
+
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userinfo-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+
+.userinfo-nickname {
+  color: #aaa;
+}
+
+.usermotto {
+  margin-top: 200px;
+}
+
+.weui-cell__bd_chc {
+  -webkit-box-flex: 3;
+  -webkit-flex: 3;
+          flex: 3;
+  margin: 0rpx;
+}
