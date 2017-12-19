@@ -104,7 +104,8 @@
         Bmob.applicationKey = applicationKey;
         Bmob.masterKey = masterKey;
         Bmob._useMasterKey = true;
-        Bmob.serverURL = "https://" + applicationId + ".bmobcloud.com";
+        //Bmob.serverURL = "https://" + applicationId + ".bmobcloud.com";
+        Bmob.serverURL = "https://" + applicationId + ".shenguotech.cn:8443";
     };
 
     if (Bmob._isNode) {

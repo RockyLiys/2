@@ -5,9 +5,9 @@ const app = getApp()
 var that;
 Page({
   data: {
-    motto: 'Hello World',
-    userInfo: {},
-    hasUserInfo: false,
+    //motto: 'Hello World',
+    userInfo: {"rocky":"11111"},
+    hasUserInfo: true,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     btnText: '保存',
     gender: [
@@ -19,9 +19,9 @@ Page({
       { value: 'outer', name: '外向型' },
       { value: 'unknown', name: '不确定' },
     ],
-    selectedgender: "unknown",
-    selectedxingge: 'unknown',
-    selectedfangxiang: 'pingheng',
+    selectedgender: "male",
+    selectedxingge: 'outer',
+    selectedfangxiang: '23333',
 
     date: '2015-06-01',
     region: ['北京市', '北京市', '全部'],
@@ -29,9 +29,16 @@ Page({
     timeindex: 4,
     timearray: ['0小时', '0.5小时', '1小时', '1.5小时', '2小时', '2.5小时', '3小时', '3.5小时', '4小时'],
 
-    budget: 10000,
-    classlist: [ ],
-    fangxiang: [ ],
+    budget: 20000,
+    classlist: [
+      {value: 1111, name: 2222},
+      { value: 33333, name: 44444} 
+    ],
+    fangxiang: [
+      {value: 1111, name: 22222},
+      { value: 23333, name: 55555 },
+      { value: 55555, name: 4444 }
+    ],
     
     cloudresult:{}
   },
