@@ -2,6 +2,7 @@
 //获取应用实例
 var Bmob = require('../../utils/bmob.js');
 const app = getApp()
+console.log(app);
 var that;
 Page({
   data: {
@@ -50,6 +51,7 @@ Page({
   },
 
   onLoad: function () {
+    console.log("onLoad....");
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -77,9 +79,22 @@ Page({
       })
     }
     //取服务器数据classlist
+    wx.request({
+      url: "https://shenguotech.cn:8443/iphone/helloworld",
+      method: "GET",
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success: function (res){
+        console.log(res.data);
+        console.log(res.statusCode);
+        console.log(res.header);
+      }
+    })
     that = this;
-    var Classability = Bmob.Object.extend("classability1");
+    var Classability = Bmob.Object.extend("classability2");
     var query = new Bmob.Query(Classability);
+    console.log(query);
     query.find({
       success: function (results) {
         console.log("共查询到classability1 " + results.length + " 条记录");
@@ -186,6 +201,11 @@ Page({
     //设置初始默认数值
 
   },
+
+  onReady: function () {
+    console.log("onReady....");
+  },
+
 
   btnTestColud: function () {
     console.log("call cloud send objectid "+app.globalData.childdata.objectid);

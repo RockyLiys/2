@@ -1,7 +1,7 @@
 {
   "pages":[
-    "pages/index/index",
-    "pages/logs/logs"
+    "wxp/site/index/index",
+    "wxp/site/logs/logs"
   ],
   "window":{
     "backgroundTextStyle":"light",
@@ -12,11 +12,11 @@
   "tabBar": {
     "list": [
       {
-        "pagePath": "pages/index/index",
+        "pagePath": "wxp/site/index/index",
         "text": "首页"
       },
       {
-        "pagePath": "pages/logs/logs",
+        "pagePath": "wxp/site/logs/logs",
         "text": "日志"
       }
     ],

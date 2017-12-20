@@ -88,8 +88,8 @@
    * @param {String} applicationKey 你的 restful api Key.
    * @param {String} masterKey (optional) 你的 bmob Master Key.
    */
-    Bmob.initialize = function (applicationId, applicationKey, masterKey) {
-        Bmob._initialize(applicationId, applicationKey, masterKey);
+    Bmob.initialize = function (applicationId, applicationKey, masterKey, host) {
+        Bmob._initialize(applicationId, applicationKey, masterKey, host);
     };
 
     /**
@@ -99,13 +99,13 @@
    * @param {String} applicationKey Your Bmob Application Key
 
    */
-    Bmob._initialize = function (applicationId, applicationKey, masterKey) {
+    Bmob._initialize = function (applicationId, applicationKey, masterKey, host) {
         Bmob.applicationId = applicationId;
         Bmob.applicationKey = applicationKey;
         Bmob.masterKey = masterKey;
         Bmob._useMasterKey = true;
-        //Bmob.serverURL = "https://" + applicationId + ".bmobcloud.com";
-        Bmob.serverURL = "https://" + applicationId + ".shenguotech.cn:8443";
+        console.log(applicationId, applicationKey, masterKey,host);
+        Bmob.serverURL = "https://" + applicationId + "." + host;
     };
 
     if (Bmob._isNode) {
