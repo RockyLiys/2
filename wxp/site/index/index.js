@@ -1,6 +1,7 @@
 //index.js
 //获取应用实例
 var Bmob = require('../../utils/bmob.js');
+var http = require('../../utils/http.js')
 const app = getApp()
 console.log(app);
 var that;
@@ -79,18 +80,9 @@ Page({
       })
     }
     //取服务器数据classlist
-    wx.request({
-      url: "https://shenguotech.cn:8443/iphone/helloworld",
-      method: "GET",
-      header: {
-        'content-type': 'application/json' // 默认值
-      },
-      success: function (res){
-        console.log(res.data);
-        console.log(res.statusCode);
-        console.log(res.header);
-      }
-    })
+    var data = http._get("/iphone/helloworld")
+    console.log("hello world.......");
+    console.log(data);
     that = this;
     var Classability = Bmob.Object.extend("classability2");
     var query = new Bmob.Query(Classability);

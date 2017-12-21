@@ -7149,9 +7149,4 @@
     var io = ('undefined' === typeof module ? {} : module.exports);
     var BmobSocketIo = {};
     exports.BmobSocketIo = BmobSocketIo;
-
-
-
-
-
 }.call(this));
