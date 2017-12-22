@@ -21,8 +21,9 @@
   */
   http.Host = "https://shenguotech.cn:8443";
   http.Header = {
-    'content-type': 'application/json' // 默认值
+    'content-type': 'application/json', // 默认值
   }
+  http.tmpT = "ss"
 
   /*
     组装url
@@ -40,18 +41,30 @@
     }
   }
   /*
+    返回结果
+  */
+  http._resp = function(data){
+    this.tmpT = data;
+  }
+  /*
     请求get
     传入uri
   */
   http._get = function(uri) {
-    var url = http._url(uri)
+    var that = this;
+    var url = http._url(uri);
+    var result = "";
     wx.request({
-      url: http._url(uri),
+      url: url,
       method: "GET",
       header: http.Header,
-      success: function (res) {
+      success: res => {
+        console.log('get............................');   
         if (res.statusCode == 200) {
-          return res.data;
+          console.log(res);
+          that.setData({
+            result: res
+          })
         }
       },
       fail: function (err) {

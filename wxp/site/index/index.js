@@ -32,15 +32,8 @@ Page({
     timearray: ['0小时', '0.5小时', '1小时', '1.5小时', '2小时', '2.5小时', '3小时', '3.5小时', '4小时'],
 
     budget: 20000,
-    classlist: [
-      {value: 1111, name: 2222},
-      { value: 33333, name: 44444} 
-    ],
-    fangxiang: [
-      {value: 1111, name: 22222},
-      { value: 23333, name: 55555 },
-      { value: 55555, name: 4444 }
-    ],
+    classlist: [],
+    fangxiang: [],
     
     cloudresult:{}
   },
@@ -80,58 +73,86 @@ Page({
       })
     }
     //取服务器数据classlist
-    var data = http._get("/iphone/helloworld")
-    console.log("hello world.......");
-    console.log(data);
+    //http._get("https://shenguotech.cn:8443/iphone/helloworld")
     that = this;
-    var Classability = Bmob.Object.extend("classability2");
-    var query = new Bmob.Query(Classability);
-    console.log(query);
-    query.find({
-      success: function (results) {
-        console.log("共查询到classability1 " + results.length + " 条记录");
-        // 循环处理查询到的数据
-        for (var i = 0; i < results.length; i++) {
-          var object = results[i];
-          // console.log(object.id + ' - ' + object.get('classname'));
-          var newarray = [{
-            value: object.get('classname'),
-            name: object.get('classname'),
-          }];
+    wx.request({
+      url: http._url("/iphone/classability"),
+      method: "GET",
+      header: http.Header,
+      success: res => {
+        if (res.statusCode == 200) {
           that.setData({
-            'classlist': that.data.classlist.concat(newarray)
+            'classlist': res.data.data
           })
         }
       },
-      error: function (error) {
-        console.log("查询失败: " + error.code + " " + error.message);
+      fail: function (err) {
+        console.log(err);
       }
-    });
+    })
+    // var Classability = Bmob.Object.extend("classability2");
+    // var query = new Bmob.Query(Classability);
+    // console.log(query);
+    // query.find({
+    //   success: function (results) {
+    //     console.log("共查询到classability1 " + results.length + " 条记录");
+    //     // 循环处理查询到的数据
+    //     for (var i = 0; i < results.length; i++) {
+    //       var object = results[i];
+    //       // console.log(object.id + ' - ' + object.get('classname'));
+    //       var newarray = [{
+    //         value: object.get('classname'),
+    //         name: object.get('classname'),
+    //       }];
+    //       that.setData({
+    //         'classlist': that.data.classlist.concat(newarray)
+    //       })
+    //     }
+    //   },
+    //   error: function (error) {
+    //     console.log("查询失败: " + error.code + " " + error.message);
+    //   }
+    // });
 
     //查询方向数据
-    var Peiyangfangxiang = Bmob.Object.extend("peiyangfangxiang");
-    var query = new Bmob.Query(Peiyangfangxiang);
-    query.find({
-      success: function (results) {
-        console.log("共查询到培养方向 " + results.length + " 条记录");
-        // 循环处理查询到的数据
-        for (var i = 0; i < results.length; i++) {
-          var object = results[i];
-          // console.log(object.id + ' - ' + object.get('classname'));
-
-          var newarray = [{
-            value: object.get('typekey'),
-            name: object.get('typename'),
-          }];
+    wx.request({
+      url: http._url("/iphone/trainingdirection"),
+      method: "GET",
+      header: http.Header,
+      success: res => {
+        if (res.statusCode == 200) {
           that.setData({
-            'fangxiang': that.data.fangxiang.concat(newarray)
+            'fangxiang': res.data.data
           })
         }
       },
-      error: function (error) {
-        console.log("查询失败: " + error.code + " " + error.message);
+      fail: function (err) {
+        console.log(err);
       }
-    });
+    })
+    var Peiyangfangxiang = Bmob.Object.extend("peiyangfangxiang");
+    var query = new Bmob.Query(Peiyangfangxiang);
+    // query.find({
+    //   success: function (results) {
+    //     console.log("共查询到培养方向 " + results.length + " 条记录");
+    //     // 循环处理查询到的数据
+    //     for (var i = 0; i < results.length; i++) {
+    //       var object = results[i];
+    //       // console.log(object.id + ' - ' + object.get('classname'));
+
+    //       var newarray = [{
+    //         value: object.get('typekey'),
+    //         name: object.get('typename'),
+    //       }];
+    //       that.setData({
+    //         'fangxiang': that.data.fangxiang.concat(newarray)
+    //       })
+    //     }
+    //   },
+    //   error: function (error) {
+    //     console.log("查询失败: " + error.code + " " + error.message);
+    //   }
+    // });
     //查询用户数据
     var Children = Bmob.Object.extend("children");
     var newOpenid = wx.getStorageSync('openid')
@@ -148,7 +169,6 @@ Page({
 
         var object = results[results.length - 1];
         console.log(object.id + ' - ' + object.get('region'));
-
         app.globalData.childdata.region = object.get('region');
         app.globalData.childdata.birthday = object.get('birthday');
         app.globalData.childdata.gender = object.get('gender');
