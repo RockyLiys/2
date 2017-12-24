@@ -1,6 +1,6 @@
 //app.js
 var Bmob = require('wxp/utils/bmob.js')
-var host = "bmobcloud.com"  // shenguotech.cn:8443
+var host = "shenguotech.cn:8443";//"bmobcloud.com"  // shenguotech.cn:8443
 Bmob.initialize("7658aba544d88d3b95405025114ab37b", "20b84fb31710b557d1be1d6ced116a8d", "",host);
 
 App({

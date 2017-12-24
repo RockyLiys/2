@@ -1,9 +1,8 @@
 //index.js
 //获取应用实例
 var Bmob = require('../../utils/bmob.js');
-var http = require('../../utils/http.js')
-const app = getApp()
-console.log(app);
+var http = require('../../utils/http.js');
+const app = getApp();
 var that;
 Page({
   data: {
@@ -32,7 +31,7 @@ Page({
     timearray: ['0小时', '0.5小时', '1小时', '1.5小时', '2小时', '2.5小时', '3小时', '3.5小时', '4小时'],
 
     budget: 20000,
-    classlist: [],
+    classability: [],
     fangxiang: [],
     
     cloudresult:{}
@@ -71,8 +70,8 @@ Page({
           })
         }
       })
-    }
-    //取服务器数据classlist
+    };
+    //取服务器数据classability
     //http._get("https://shenguotech.cn:8443/iphone/helloworld")
     that = this;
     wx.request({
@@ -82,37 +81,14 @@ Page({
       success: res => {
         if (res.statusCode == 200) {
           that.setData({
-            'classlist': res.data.data
+            'classability': res.data.data
           })
         }
       },
       fail: function (err) {
         console.log(err);
       }
-    })
-    // var Classability = Bmob.Object.extend("classability2");
-    // var query = new Bmob.Query(Classability);
-    // console.log(query);
-    // query.find({
-    //   success: function (results) {
-    //     console.log("共查询到classability1 " + results.length + " 条记录");
-    //     // 循环处理查询到的数据
-    //     for (var i = 0; i < results.length; i++) {
-    //       var object = results[i];
-    //       // console.log(object.id + ' - ' + object.get('classname'));
-    //       var newarray = [{
-    //         value: object.get('classname'),
-    //         name: object.get('classname'),
-    //       }];
-    //       that.setData({
-    //         'classlist': that.data.classlist.concat(newarray)
-    //       })
-    //     }
-    //   },
-    //   error: function (error) {
-    //     console.log("查询失败: " + error.code + " " + error.message);
-    //   }
-    // });
+    });
 
     //查询方向数据
     wx.request({
@@ -129,39 +105,17 @@ Page({
       fail: function (err) {
         console.log(err);
       }
-    })
-    var Peiyangfangxiang = Bmob.Object.extend("peiyangfangxiang");
-    var query = new Bmob.Query(Peiyangfangxiang);
-    // query.find({
-    //   success: function (results) {
-    //     console.log("共查询到培养方向 " + results.length + " 条记录");
-    //     // 循环处理查询到的数据
-    //     for (var i = 0; i < results.length; i++) {
-    //       var object = results[i];
-    //       // console.log(object.id + ' - ' + object.get('classname'));
-
-    //       var newarray = [{
-    //         value: object.get('typekey'),
-    //         name: object.get('typename'),
-    //       }];
-    //       that.setData({
-    //         'fangxiang': that.data.fangxiang.concat(newarray)
-    //       })
-    //     }
-    //   },
-    //   error: function (error) {
-    //     console.log("查询失败: " + error.code + " " + error.message);
-    //   }
-    // });
+    });
+    
     //查询用户数据
     var Children = Bmob.Object.extend("children");
     var newOpenid = wx.getStorageSync('openid')
     var currentUser = Bmob.User.current();
-    query = new Bmob.Query(Children);
+    var query = new Bmob.Query(Children);
     if (currentUser) {
       console.log("UserModel.id "+currentUser.id);
       query.equalTo("own", currentUser.id);  
-    }
+    };
     query.find({
       success: function (results) {
         console.log("children数据共查询到 " + results.length + " 条记录" + newOpenid);
@@ -182,15 +136,15 @@ Page({
         var temptimeindex = that.data.timearray.indexOf(app.globalData.childdata.learninghours);
 
         const hobbylength = app.globalData.childdata.hobbyclass.length;
-        const classlistlength = that.data.classlist.length;
+        const classlistlength = that.data.classability.length;
         for (let i = 0; i < hobbylength; i++)
           for (let j = 0; j < classlistlength; j++)
           {
-            if (that.data.classlist[j].value == app.globalData.childdata.hobbyclass[i])
-              that.data.classlist[j].checked=true;
+            if (that.data.classability[j].value == app.globalData.childdata.hobbyclass[i])
+              that.data.classability[j].checked=true;
            }; 
          
-         //  console.log(that.data.classlist);
+         //  console.log(that.data.classability);
 
         that.setData({
           region: app.globalData.childdata.region,
@@ -200,7 +154,7 @@ Page({
           selectedxingge: app.globalData.childdata.xingge,
           selectedfangxiang: app.globalData.childdata.fangxiang,
           timeindex: temptimeindex,
-          'classlist': that.data.classlist
+          'classability': that.data.classability
         })
       },
       error: function (error) {
@@ -221,6 +175,7 @@ Page({
 
   btnTestColud: function () {
     console.log("call cloud send objectid "+app.globalData.childdata.objectid);
+    console.log(app.globalData);
     Bmob.Cloud.run('calscore', { "objectid": app.globalData.childdata.objectid }, {
       success: function (result) {
         console.log(result);
@@ -243,8 +198,8 @@ Page({
     app.globalData.childdata.fangxiang = this.data.selectedfangxiang
     var selectedlist = [];
 
-    for (var i = 0; i < this.data.classlist.length; i++) {
-      var object = this.data.classlist[i];
+    for (var i = 0; i < this.data.classability.length; i++) {
+      var object = this.data.classability[i];
       if (object.checked == true) {
 
         selectedlist.push(object.name);
@@ -333,7 +288,7 @@ Page({
   },
   classCheckboxChange: function (e) {
     console.log('checkbox发生change事件，携带value值为：', e.detail.value)
-    var items = this.data.classlist, values = e.detail.value;
+    var items = this.data.classability, values = e.detail.value;
     for (var i = 0, lenI = items.length; i < lenI; ++i) {
       items[i].checked = false;
       for (var j = 0, lenJ = values.length; j < lenJ; ++j) {
@@ -344,7 +299,7 @@ Page({
       }
     }
     this.setData({
-      classlist: items
+      classability: items
     })
   }
 })

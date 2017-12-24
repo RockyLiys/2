@@ -132,6 +132,7 @@
         if (path[0] === "/") {
             path = path.substring(1);
         }
+        console.log(path);
         return "Bmob/" + Bmob.applicationId + "/" + path;
     };
 
