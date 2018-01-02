@@ -306,6 +306,8 @@
         }
 
         var url = Bmob.serverURL;
+        console.log("url==", url);
+        console.log("route", route);
         if (url.charAt(url.length - 1) !== "/") {
             url += "/";
         }
@@ -346,7 +348,8 @@
             dataObject._SessionToken = currentUser._sessionToken;
         }
         var data = JSON.stringify(dataObject);
-
+        console.log("data-===", data);
+        console.log("url=====", url);
         return Bmob._ajax(method, url, data).then(null,
             function (response) {
                 // Transform the error into an instance of Bmob.Error by trying to parse
@@ -5325,6 +5328,8 @@
             loginWithWeapp: function (code) {
                 var that = this;
                 var promise = new Bmob.Promise();
+                console.log(promise);
+                console.log(code);
                 Bmob.User.requestOpenId(code, {
                     success: function (authData) {//获取授权成功
                         var platform = "weapp";
@@ -5334,10 +5339,10 @@
                         }, function (error) {
                             promise.reject(error);
                         });
-
                     },
                     error: function (error) {
-                        promise.reject(error);
+                      console.log(error);
+                      promise.reject(error);
                     }
                 }
 
@@ -5709,7 +5714,9 @@
                 var json = {
                     code: code
                 };
+                console.log(json);
                 var request = Bmob._request("wechatApp", code, null, "POST", json);
+                console.log(request);
                 return request._thenRunCallbacks(options);
             },
 

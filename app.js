@@ -1,24 +1,31 @@
 //app.js
 var Bmob = require('wxp/utils/bmob.js')
-var host = "shenguotech.cn:8443";//"bmobcloud.com"  // shenguotech.cn:8443
+var host = "bmobcloud.com"//"bmobcloud.com"  // shenguotech.cn:8443
 Bmob.initialize("7658aba544d88d3b95405025114ab37b", "20b84fb31710b557d1be1d6ced116a8d", "",host);
 
 App({
   onLaunch: function () {
     var user = new Bmob.User();//开始注册用户
+    console.log("user===",user);
     var newOpenid = wx.getStorageSync('openid')
+    console.log('newOpenid==', newOpenid);
+    console.log(!newOpenid);
     if (!newOpenid) {
       wx.login({
         success: function (res) {
+          console.log('login.....', res.code, user);
           user.loginWithWeapp(res.code).then(function (user) {
             var openid = user.get("authData").weapp.openid;
+            console.log("openid==",openid);
             console.log(user, 'user', user.id, res);
+            console.log(user.get("nickName"));
             if (user.get("nickName")) {
               // 第二次访问
               console.log(user.get("nickName"), 'res.get("nickName")');
               wx.setStorageSync('openid', openid)
             } else {
               //保存用户其他信息
+              console.log('saveinfo......');
               wx.getUserInfo({
                 success: function (result) {
                   var userInfo = result.userInfo;
@@ -58,6 +65,8 @@ App({
     // 获取用户信息
     wx.getSetting({
       success: res => {
+        console.log('getSetting==', res);
+        console.log(res.authSetting['scope.userInfo']);
         if (res.authSetting['scope.userInfo']) {
           // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
           wx.getUserInfo({

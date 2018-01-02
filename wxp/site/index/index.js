@@ -6,10 +6,10 @@ const app = getApp();
 var that;
 Page({
   data: {
-    //motto: 'Hello World',
     userInfo: {"rocky":"11111"},
-    hasUserInfo: true,
+    hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
+
     btnText: '保存',
     gender: [
       { value: 'male', name: '男' },
@@ -44,7 +44,7 @@ Page({
   },
 
   onLoad: function () {
-    console.log("onLoad....");
+    console.log("onLoad....", app.globalData.userInfo, this.data.canIUse);
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -53,7 +53,9 @@ Page({
     } else if (this.data.canIUse) {
       // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
       // 所以此处加入 callback 以防止这种情况
+      console.log(111111111);
       app.userInfoReadyCallback = res => {
+        console.log("userInfoReadyCallback====",res);
         this.setData({
           userInfo: res.userInfo,
           hasUserInfo: true
@@ -108,6 +110,7 @@ Page({
     });
     
     //查询用户数据
+    /*
     var Children = Bmob.Object.extend("children");
     var newOpenid = wx.getStorageSync('openid')
     var currentUser = Bmob.User.current();
@@ -118,6 +121,7 @@ Page({
     };
     query.find({
       success: function (results) {
+        console.log(results);
         console.log("children数据共查询到 " + results.length + " 条记录" + newOpenid);
         // 处理查询到的数据
 
@@ -161,6 +165,7 @@ Page({
         console.log("查询失败: " + error.code + " " + error.message);
       }
     });
+    */
     //赋初值
 
 
@@ -171,7 +176,14 @@ Page({
   onReady: function () {
     console.log("onReady....");
   },
-
+  getUserInfo: function (e) {
+    console.log("getuserinfo===", e)
+    app.globalData.userInfo = e.detail.userInfo
+    this.setData({
+      userInfo: e.detail.userInfo,
+      hasUserInfo: true
+    })
+  },
 
   btnTestColud: function () {
     console.log("call cloud send objectid "+app.globalData.childdata.objectid);
@@ -241,14 +253,7 @@ Page({
     });
     this.setData({ btnText: "已保存" })
   },
-  getUserInfo: function (e) {
-    console.log(e)
-    app.globalData.userInfo = e.detail.userInfo
-    this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
-    })
-  },
+
   radioChange: function (e) {
     console.log('性别radio发生change事件，携带value值为：', e.detail.value)
     this.setData({ selectedgender: e.detail.value })
